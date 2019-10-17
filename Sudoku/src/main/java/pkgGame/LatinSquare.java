@@ -2,7 +2,6 @@ package pkgGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.apache.commons.lang.ArrayUtils;
 import pkgEnum.ePuzzleViolation;
 
@@ -150,27 +149,26 @@ public class LatinSquare {
 	 * 
 	 * @version 1.0
 	 * @since Midterm #1
-	 * @param arr - one dimensional array to check for duplicates
-	 * @return - returns 'true' if any of the elements are duplicate
+	 * @param arr - one dimensional array to checements are duplicate
 	 */
 	public boolean hasDuplicates(int[] arr) {
 
-		boolean hasDuplicates = false;	
-		int[] sortedArray = Arrays.copyOf(arr, arr.length);
+		boolean hasDuplicates = false;
+
+		int[] arrayToSort = Arrays.copyOf(arr, arr.length);
 
 		if (bIgnoreZero) {
-			sortedArray = RemoveZeros(sortedArray);
+			arrayToSort = RemoveZeros(arrayToSort);
 		}
-		Arrays.sort(sortedArray);
-		for (int i = 0; i < sortedArray.length - 1; i++) {
-			if (sortedArray[i] == sortedArray[i + 1]) {
+		Arrays.sort(arrayToSort);
+		for (int i = 0; i < arrayToSort.length - 1; i++) {
+			if (arrayToSort[i] == arrayToSort[i + 1]) {
 				hasDuplicates = true;
 				break;
 			}
 		}
 		return hasDuplicates;
 	}
-	
 
 	/**
 	 * hasDuplicates - overloaded, checking the entire puzzle for a duplicate
@@ -183,15 +181,18 @@ public class LatinSquare {
 
 		// Check if anything in the row is duplicate
 		for (int i = 0; i < LatinSquare.length; i++) {
-			if (hasDuplicates(getRow(i)))
+			if (hasDuplicates(getRow(i))) {
 				AddPuzzleViolation(new PuzzleViolation(ePuzzleViolation.DupRow, i));
+			}
+		}
+		for (int i = 0; i < LatinSquare.length; i++) {
+			if (hasDuplicates(getColumn(i))) {
+				AddPuzzleViolation(new PuzzleViolation(ePuzzleViolation.DupCol, i));
+
+			}
 		}
 
-		// TODO: Check if anything in the column is duplicate
-		// If there's a duplicate in the column, call AddPuzzleViolation(pv)
-
-
-		return(PV.size() > 0);
+		return (PV.size() > 0);
 	}
 
 	/**
@@ -221,6 +222,7 @@ public class LatinSquare {
 	public boolean doesElementExist(int[] arr, int iValue) {
 
 		boolean doesElementExist = false;
+
 		for (int i = 0; i < arr.length; i++) {
 			if (iValue == arr[i]) {
 				doesElementExist = true;
@@ -242,12 +244,23 @@ public class LatinSquare {
 	 */
 	public boolean hasAllValues(int[] arr1, int[] arr2) {
 
-		// TODO: Return 'true' if every element from arr2 is in arr1
-
 		boolean hasAllValues = true;
 
-		return hasAllValues;
+		for (int i = 0; i < arr2.length; i++) {
+			boolean ifEqual = false;
+			for (int j = 0; j < arr1.length; j++) {
+				if (arr2[i] == arr1[j]) {
+					ifEqual = true;
+					break;
+				}
+			}
+			if (ifEqual == false) {
+				hasAllValues = false;
+				break;
+			}
+		}
 
+		return hasAllValues;
 	}
 
 	/**
@@ -256,7 +269,8 @@ public class LatinSquare {
 	 * each element in the first coumn is found in every other column
 	 * 
 	 * @version 1.0
-	 * @since Midterm #1
+	 * @since Midterm #1k for duplicates
+	 * @return - returns 'true' if any of the el
 	 * @return returns 'true' if the two-dimensional array is a LatinSquare
 	 */
 	public boolean isLatinSquare() {
@@ -290,6 +304,19 @@ public class LatinSquare {
 		return isLatinSquare;
 	}
 
+	public static boolean isLatinSquare(int[][] arr) {
+
+		boolean isLatinSquare = false;
+
+		LatinSquare ls = new LatinSquare();
+		ls.setLatinSquare(arr);
+
+		if (ls.isLatinSquare()) {
+			isLatinSquare = true;
+		}
+		return isLatinSquare;
+	}
+
 	/**
 	 * ContainsZero - return 'true' if any element in the LatinSquare is a zero
 	 * 
@@ -298,7 +325,14 @@ public class LatinSquare {
 	 * @return - returns 'true' if any element in the LatinSquare is a zero
 	 */
 	public boolean ContainsZero() {
-		// TODO: Return 'true' if any element in the puzzle contains a zero
+
+		for (int i = 0; i < LatinSquare.length; i++) {
+			for (int j = 0; j < LatinSquare.length; j++) {
+				if (LatinSquare[i][j] == 0) {
+					return true;
+				}
+			}
+		}
 		return false;
 
 	}
@@ -321,9 +355,18 @@ public class LatinSquare {
 	 * @since Midterm #1
 	 * @param ePV - given puzzle violation type
 	 */
+
 	protected ArrayList<PuzzleViolation> getPV(ePuzzleViolation ePV) {
-		// FIXME: Return a list of the puzzle violations by type, null if none.
-		return null;
+
+		ArrayList<PuzzleViolation> p = new ArrayList<>();
+		for (PuzzleViolation pv : PV) {
+			if (pv.getePuzzleViolation() == ePV) {
+				p.add(pv);
+			} else {
+				return null;
+			}
+		}
+		return p;
 	}
 
 	/**
@@ -347,4 +390,8 @@ public class LatinSquare {
 		PV.add(pv);
 	}
 
+}
+
+interface iLatinSquare {
+	public void isLatinSquare();
 }

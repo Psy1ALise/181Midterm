@@ -20,7 +20,7 @@ public class PuzzleViolation {
 	public PuzzleViolation(pkgEnum.ePuzzleViolation ePuzzleViolation, int iValue) {
 		super();
 		this.ePuzzleViolation = ePuzzleViolation;
-		this.iValue = iValue;
+		this.iValue = iValue;	
 	}
 
 	public ePuzzleViolation getePuzzleViolation() {
