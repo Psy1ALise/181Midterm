@@ -391,7 +391,3 @@ public class LatinSquare {
 	}
 
 }
-
-interface iLatinSquare {
-	public void isLatinSquare();
-}
